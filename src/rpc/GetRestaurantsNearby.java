@@ -1,4 +1,4 @@
-package laiproject;
+package rpc;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -113,8 +113,6 @@ public class GetRestaurantsNearby extends HttpServlet {
 	//
 	// }
 
-
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		StringBuffer jb = new StringBuffer();
@@ -134,7 +132,7 @@ public class GetRestaurantsNearby extends HttpServlet {
 			if (input.has("lat") && input.has("lon")) {
 				double lat = (Double) input.get("lat");
 				double lon = (Double) input.get("lon");
-				array = connection.GetRestaurantsNearLoation(lat, lon);
+				array = connection.GetRestaurantsNearLoationViaYelpAPI(lat, lon);
 			}
 			response.setContentType("application/json");
 			response.addHeader("Access-Control-Allow-Origin", "*");

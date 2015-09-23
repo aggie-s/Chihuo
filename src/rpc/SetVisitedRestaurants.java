@@ -1,8 +1,10 @@
-package laiproject;
+package rpc;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,17 +19,17 @@ import org.json.JSONObject;
 import db.DBConnection;
 
 /**
- * Servlet implementation class RecommendRestaurants
+ * Servlet implementation class SetVisitedRestaurants
  */
-@WebServlet("/RecommendRestaurants")
-public class RecommendRestaurants extends HttpServlet {
+@WebServlet("/SetVisitedRestaurants")
+public class SetVisitedRestaurants extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final DBConnection connection = new DBConnection();
-
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public RecommendRestaurants() {
+	public SetVisitedRestaurants() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -40,14 +42,12 @@ public class RecommendRestaurants extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("application/json");
 		response.addHeader("Access-Control-Allow-Origin", "*");
-		JSONArray res = new JSONArray();
-		res.put("panda express");
-		res.put("hong kong express");
-		res.put("chinatown express");
+		String res = "OK";
 		PrintWriter out = response.getWriter();
 		out.print(res);
 		out.flush();
 		out.close();
+		//
 	}
 
 	/**
@@ -76,16 +76,23 @@ public class RecommendRestaurants extends HttpServlet {
 		}
 
 		try {
+
 			JSONObject input = new JSONObject(jb.toString());
-			JSONArray array = null;
-			if (input.has("user_id")) {
+			if (input.has("user_id") && input.has("visited")) {
 				String user_id = (String) input.get("user_id");
-				array = connection.RecommendRestaurants(user_id);
+				JSONArray array = (JSONArray) input.get("visited");
+				List<String> visited_list = new ArrayList<>();
+				for (int i = 0; i < array.length(); i++) {
+					String business_id = (String) array.get(i);
+					visited_list.add(business_id);
+				}
+				connection.SetVisitedRestaurants(user_id, visited_list);
 			}
+
 			response.setContentType("application/json");
 			response.addHeader("Access-Control-Allow-Origin", "*");
 			PrintWriter out = response.getWriter();
-			out.print(array);
+			out.print("ok");
 			out.flush();
 			out.close();
 		} catch (JSONException e) {

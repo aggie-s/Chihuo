@@ -12,6 +12,9 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import yelp.Restaurant;
+import yelp.YelpAPI;
+
 public class DBConnection {
 	private Connection conn = null;
 	private static final int MAX_RECOMMENDED_RESTAURANTS = 20;
@@ -24,6 +27,59 @@ public class DBConnection {
 			e.printStackTrace();
 		}
 	}
+	
+	public JSONArray GetRestaurantsNearLoationViaYelpAPI(double lat, double lon) {
+	   	 try {
+	   		 YelpAPI api = new YelpAPI();
+	   		 JSONObject response = new JSONObject(
+	   				 api.searchForBusinessesByLocation(lat, lon));
+	   		 JSONArray array = (JSONArray) response.get("businesses");
+	   		 if (conn == null) {
+	   			 return null;
+	   		 }
+	   		 Statement stmt = conn.createStatement();
+	   		 String sql = "";
+	   		 List<JSONObject> list = new ArrayList<JSONObject>();
+
+	   		 for (int i = 0; i < array.length(); i++) {
+	   			 JSONObject object = array.getJSONObject(i);
+	   			 Restaurant restaurant = new Restaurant(object);
+	   			 String business_id = restaurant.getBusinessId();
+	   			 String name = restaurant.getName();
+	   			 String categories = restaurant.getCategories();
+	   			 String city = restaurant.getCity();
+	   			 String state = restaurant.getState();
+	   			 String fullAddress = restaurant.getFullAddress();
+	   			 double stars = restaurant.getStars();
+	   			 double latitude = restaurant.getLatitude();
+	   			 double longitude = restaurant.getLongitude();
+	   			 String imageUrl = restaurant.getImageUrl();
+	   			 JSONObject obj = new JSONObject();
+	   			 obj.append("business_id", business_id);
+	   			 obj.append("name", name);
+	   			 obj.append("stars", stars);
+	   			 obj.append("latitude", latitude);
+	   			 obj.append("longitude", longitude);
+	   			 obj.append("full_address", fullAddress);
+	   			 obj.append("city", city);
+	   			 obj.append("state", state);
+	   			 obj.append("categories", categories);
+	   			 obj.append("image_url", imageUrl);
+	   			 sql = "INSERT IGNORE INTO RESTAURANTS " + "VALUES ('"
+	   					 + business_id + "', \"" + name + "\", \"" + categories
+	   					 + "\", '" + city + "', '" + state + "', " + stars
+	   					 + ", \"" + fullAddress + "\", " + latitude + ","
+	   					 + longitude + ",\"" + imageUrl + "\")";
+	   			 System.out.println(sql);
+	   			 stmt.executeUpdate(sql);
+	   			 list.add(obj);
+	   		 }
+	   		 return new JSONArray(list);
+	   	 } catch (Exception e) { /* report an error */
+	   		 System.out.println(e.getMessage());
+	   	 }
+	   	 return null;
+	    }
 
 	public JSONArray GetRestaurantsNearLoation(double lat, double lon) {
 		try {
