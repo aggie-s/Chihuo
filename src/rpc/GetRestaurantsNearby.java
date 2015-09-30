@@ -22,7 +22,7 @@ import db.DBConnection;
 @WebServlet("/GetRestaurantsNearby")
 public class GetRestaurantsNearby extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final DBConnection connection = new DBConnection();
+	private static final DBConnection connection = new DBConnection("jdbc:mysql://localhost:3306/mysql?user=root&password=password");
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -38,6 +38,7 @@ public class GetRestaurantsNearby extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+//		System.out.println("thread ID: " + Thread.currentThread().getId());
 		response.setContentType("application/json");
 		// response.setCharacterEncoding ("UTF-8");
 		response.addHeader("Access-Control-Allow-Origin", "*");
@@ -115,6 +116,7 @@ public class GetRestaurantsNearby extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+//		System.out.println("thread ID: " + Thread.currentThread().getId());
 		StringBuffer jb = new StringBuffer();
 		String line = null;
 		try {
