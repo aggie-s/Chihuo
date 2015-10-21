@@ -20,6 +20,23 @@ public class DBConnection {
 	private Connection conn = null;
 	private static final int MAX_RECOMMENDED_RESTAURANTS = 10;
 	private static final int MIN_RECOMMENDED_RESTAURANTS = 3;
+	/**
+	 * Make sure it is the only place to configure db related parameters
+	 */
+	public static final String HOSTNAME = "localhost";
+	public static final String PORT = "3306";
+	public static final String DBNAME = "mysql";
+	public static final String USERNAME = "root";
+	public static final String PASSWORD = "password";
+	public static final String URL;
+
+	static {
+		URL = "jdbc:mysql://" + HOSTNAME + ":" + PORT + "/" + DBNAME + "?user=" + USERNAME + "&password=" + PASSWORD;
+	}
+
+	public DBConnection() {
+		this(URL);
+	}
 
 	public DBConnection(String url) {
 		try {
@@ -325,5 +342,9 @@ public class DBConnection {
 		return null;
 	}
 
-
+	public static void main(String[] args) {
+		// This is for test purpose
+		DBConnection conn = new DBConnection("jdbc:mysql://localhost:3306/mysql?user=root&password=password");
+		JSONArray array = conn.GetRestaurantsNearLoationViaYelpAPI(1.0, 2.0);
+	}
 }

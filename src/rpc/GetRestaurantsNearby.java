@@ -19,10 +19,11 @@ import db.DBConnection;
 /**
  * Servlet implementation class GetRestaurantsNearby
  */
-@WebServlet("/GetRestaurantsNearby")
+@WebServlet(description = "Get Restaurants near a location with latitude and longitude", urlPatterns = {
+"/GetRestaurantsNearby" })
 public class GetRestaurantsNearby extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final DBConnection connection = new DBConnection("jdbc:mysql://localhost:3306/mysql?user=root&password=password");
+	private static final DBConnection connection = new DBConnection();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -38,7 +39,7 @@ public class GetRestaurantsNearby extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		System.out.println("thread ID: " + Thread.currentThread().getId());
+		// System.out.println("thread ID: " + Thread.currentThread().getId());
 		response.setContentType("application/json");
 		// response.setCharacterEncoding ("UTF-8");
 		response.addHeader("Access-Control-Allow-Origin", "*");
@@ -116,7 +117,7 @@ public class GetRestaurantsNearby extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		System.out.println("thread ID: " + Thread.currentThread().getId());
+		// System.out.println("thread ID: " + Thread.currentThread().getId());
 		StringBuffer jb = new StringBuffer();
 		String line = null;
 		try {
@@ -134,6 +135,7 @@ public class GetRestaurantsNearby extends HttpServlet {
 			if (input.has("lat") && input.has("lon")) {
 				double lat = (Double) input.get("lat");
 				double lon = (Double) input.get("lon");
+				// array = connection.GetRestaurantsNearLoation(lat, lon);
 				array = connection.GetRestaurantsNearLoationViaYelpAPI(lat, lon);
 			}
 			response.setContentType("application/json");

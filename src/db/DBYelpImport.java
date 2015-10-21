@@ -43,7 +43,7 @@ public class DBYelpImport {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			Connection conn = null;
-
+			
 			try {
 				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql?" + "user=root&password=password");
 			} catch (SQLException e) {
@@ -80,7 +80,7 @@ public class DBYelpImport {
 					+ " last_visited_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, "
 					+ " PRIMARY KEY (visit_history_id),"
 					+ "FOREIGN KEY (business_id) REFERENCES RESTAURANTS(business_id),"
-					+ "FOREIGN KEY (user_id) REFERENCES users(user_id))";
+					+ "FOREIGN KEY (user_id) REFERENCES USERS(user_id))";
 			stmt.executeUpdate(sql);
 
 			sql = "DROP TABLE IF EXISTS USER_CATEGORY_HISTORY";

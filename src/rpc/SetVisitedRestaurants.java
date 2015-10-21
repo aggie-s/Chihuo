@@ -24,8 +24,8 @@ import db.DBConnection;
 @WebServlet("/SetVisitedRestaurants")
 public class SetVisitedRestaurants extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final DBConnection connection = new DBConnection("jdbc:mysql://localhost:3306/mysql?user=root&password=password");
-	
+	private static final DBConnection connection = new DBConnection();
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -60,7 +60,6 @@ public class SetVisitedRestaurants extends HttpServlet {
 	// // TODO Auto-generated method stub
 	// doGet(request, response);
 	// }
-
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

@@ -44,9 +44,9 @@ public class DBImport {
 			stmt.executeUpdate(sql);
 			sql = "DROP TABLE IF EXISTS USER_CATEGORY_HISTORY";
 			stmt.executeUpdate(sql);
-			
-			//create tables
-			
+
+			// create tables
+
 			sql = "CREATE TABLE RESTAURANTS " + "(business_id VARCHAR(255) NOT NULL, " + " name VARCHAR(255), "
 					+ "categories VARCHAR(255), " + "city VARCHAR(255), " + "state VARCHAR(255), " + "stars FLOAT,"
 					+ "full_address VARCHAR(255), " + "latitude FLOAT, " + " longitude FLOAT, "
@@ -94,27 +94,24 @@ public class DBImport {
 
 			sql = "INSERT INTO USERS " + "VALUES (\"1111\", \"John\", \"Smith\")";
 			stmt.executeUpdate(sql);
-			
+
 			reader = new BufferedReader(new FileReader(
-		  			 "/Users/Neal/Documents/JAVA Project/yelp_dataset_challenge_academic_dataset/yelp_academic_dataset_review.json"));
-		  		
-		  		 sql = "CREATE TABLE USER_CATEGORY_HISTORY "
-		  				 + "(category_id bigint(20) unsigned NOT NULL AUTO_INCREMENT, "
-		  				 + " first_id VARCHAR(255) NOT NULL , "
-		  				 + " second_id VARCHAR(255) NOT NULL, "
-		  				 + " count bigint(20) NOT NULL, "
-		  				 + " PRIMARY KEY (category_id))";
-		  		 stmt.executeUpdate(sql);
-		  		
-		  		 while ((line = reader.readLine()) != null) {
-		  			 JSONObject review = new JSONObject(line);
-		  			 String business_id = review.getString("business_id");
-		  			 String user_id = review.getString("user_id");
-		  			 sql = "INSERT INTO USER_REVIEW_HISTORY (`user_id`, `business_id`)" + "VALUES (\"" + user_id
-		  					 + "\", \"" + business_id + "\")";
-		  			 System.out.println(sql);
-		  			 stmt.executeUpdate(sql);
-		  		 }
+					"/Users/Neal/Documents/JAVA Project/yelp_dataset_challenge_academic_dataset/yelp_academic_dataset_review.json"));
+
+			sql = "CREATE TABLE USER_CATEGORY_HISTORY " + "(category_id bigint(20) unsigned NOT NULL AUTO_INCREMENT, "
+					+ " first_id VARCHAR(255) NOT NULL , " + " second_id VARCHAR(255) NOT NULL, "
+					+ " count bigint(20) NOT NULL, " + " PRIMARY KEY (category_id))";
+			stmt.executeUpdate(sql);
+
+			while ((line = reader.readLine()) != null) {
+				JSONObject review = new JSONObject(line);
+				String business_id = review.getString("business_id");
+				String user_id = review.getString("user_id");
+				sql = "INSERT INTO USER_REVIEW_HISTORY (`user_id`, `business_id`)" + "VALUES (\"" + user_id + "\", \""
+						+ business_id + "\")";
+				System.out.println(sql);
+				stmt.executeUpdate(sql);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
