@@ -8,3 +8,5 @@
 2. SetVisitedRestaurants  
 3. RecommendRestaurants
 
+###To do list
+>add Android app
