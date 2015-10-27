@@ -7,3 +7,4 @@
 1. GetRestaurantsNearby  
 2. SetVisitedRestaurants  
 3. RecommendRestaurants
+
