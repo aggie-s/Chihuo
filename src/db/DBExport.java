@@ -28,14 +28,14 @@ public class DBExport {
 			String sql = "SELECT categories FROM RESTAURANTS AS T1 JOIN USER_REVIEW_HISTORY AS T2 ON T1.business_id = T2.business_id;";
 			ResultSet rs = stmt.executeQuery(sql);
 			BufferedWriter writer = new BufferedWriter(new FileWriter("../dataset/review_data"));
-
 			while (rs.next()) {
 				String categories = rs.getString("categories");
 				writer.write(categories + "\n");
 			}
 			writer.flush();
 			writer.close();
-		} catch (Exception e) { /* report an error */
+		} catch (Exception e) {
+			/* report an error */
 			System.out.println(e.getMessage());
 		}
 	}

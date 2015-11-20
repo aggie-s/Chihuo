@@ -37,8 +37,7 @@ public class DBConnectionDBUnit extends DatabaseTestCase {
 
 	@Override
 	protected DatabaseOperation getSetUpOperation() throws Exception {
-		return DatabaseOperation.CLEAN_INSERT; // by default (will do DELETE_ALL
-												// + INSERT)
+		return DatabaseOperation.CLEAN_INSERT; 
 	}
 
 	@Override

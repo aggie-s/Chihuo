@@ -24,10 +24,7 @@ public class Restaurant {
 				JSONArray array = (JSONArray) object.get("categories");
 				this.categories = DBImport.jsonArrayToString((JSONArray) array.get(0));
 				this.name = object.getString("name");
-				this.imageUrl = object.getString("image_url");// either
-																// image_url
-																// (big) or
-																// mobile_url(small)
+				this.imageUrl = object.getString("image_url");
 				this.stars = object.getDouble("rating");
 				JSONObject location = (JSONObject) object.get("location");
 				JSONObject coordinate = (JSONObject) location.get("coordinate");

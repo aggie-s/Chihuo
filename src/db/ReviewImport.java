@@ -33,7 +33,6 @@ public class ReviewImport {
 				StringBuilder sb = new StringBuilder(line);
 				sb.delete(sb.lastIndexOf(count), sb.length());
 				sb.delete(sb.lastIndexOf("\t"), sb.length());
-				// add values[0, value-1] back to a string
 				String[] keys = sb.toString().split(",");
 				String firstCategory = keys[0].trim();
 				String secondCategory = keys[1].trim();
@@ -47,7 +46,8 @@ public class ReviewImport {
 				stmt.executeUpdate(sql);
 			}
 			reader.close();
-		} catch (Exception e) { /* report an error */
+		} catch (Exception e) {
+			/* report an error */
 			System.out.println(e.getMessage());
 		}
 	}

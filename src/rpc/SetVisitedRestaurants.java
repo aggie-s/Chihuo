@@ -47,20 +47,12 @@ public class SetVisitedRestaurants extends HttpServlet {
 		out.print(res);
 		out.flush();
 		out.close();
-		//
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	// protected void doPost(HttpServletRequest request, HttpServletResponse
-	// response)
-	// throws ServletException, IOException {
-	// // TODO Auto-generated method stub
-	// doGet(request, response);
-	// }
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		StringBuffer jb = new StringBuffer();
@@ -71,11 +63,10 @@ public class SetVisitedRestaurants extends HttpServlet {
 				jb.append(line);
 			}
 			reader.close();
-		} catch (Exception e) { /* report an error */
+		} catch (Exception e) {
+			/* report an error */
 		}
-
 		try {
-
 			JSONObject input = new JSONObject(jb.toString());
 			if (input.has("user_id") && input.has("visited")) {
 				String user_id = (String) input.get("user_id");
@@ -87,7 +78,6 @@ public class SetVisitedRestaurants extends HttpServlet {
 				}
 				connection.SetVisitedRestaurants(user_id, visited_list);
 			}
-
 			response.setContentType("application/json");
 			response.addHeader("Access-Control-Allow-Origin", "*");
 			PrintWriter out = response.getWriter();

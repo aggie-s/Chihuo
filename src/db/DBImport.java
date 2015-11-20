@@ -14,12 +14,9 @@ import org.json.JSONObject;
 public class DBImport {
 	public static void main(String[] args) {
 		try {
-			// Step 1: Initialize the driver and connect to a SQL server
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-
 			Connection conn = null;
 			String line = null;
-
 			try {
 				conn = DriverManager
 						.getConnection("jdbc:mysql://localhost:3306/mysql?" + "user=root&password=password");
@@ -31,8 +28,7 @@ public class DBImport {
 			if (conn == null) {
 				return;
 			}
-			// Step 2: drop tables in order of user_visit_history, users,
-			// restaurants
+
 			Statement stmt = conn.createStatement();
 			String sql = "DROP TABLE IF EXISTS USER_VISIT_HISTORY";
 			stmt.executeUpdate(sql);
@@ -44,8 +40,6 @@ public class DBImport {
 			stmt.executeUpdate(sql);
 			sql = "DROP TABLE IF EXISTS USER_CATEGORY_HISTORY";
 			stmt.executeUpdate(sql);
-
-			// create tables
 
 			sql = "CREATE TABLE RESTAURANTS " + "(business_id VARCHAR(255) NOT NULL, " + " name VARCHAR(255), "
 					+ "categories VARCHAR(255), " + "city VARCHAR(255), " + "state VARCHAR(255), " + "stars FLOAT,"
@@ -69,7 +63,6 @@ public class DBImport {
 					+ " PRIMARY KEY (visit_review_id))";
 			stmt.executeUpdate(sql);
 
-			// Step 3: insert data
 			BufferedReader reader = new BufferedReader(new FileReader(
 					"/Users/Neal/Documents/JAVA Project/yelp_dataset_challenge_academic_dataset/yelp_academic_dataset_business.json"));
 			while ((line = reader.readLine()) != null) {
@@ -94,15 +87,12 @@ public class DBImport {
 
 			sql = "INSERT INTO USERS " + "VALUES (\"1111\", \"John\", \"Smith\")";
 			stmt.executeUpdate(sql);
-
 			reader = new BufferedReader(new FileReader(
 					"/Users/Neal/Documents/JAVA Project/yelp_dataset_challenge_academic_dataset/yelp_academic_dataset_review.json"));
-
 			sql = "CREATE TABLE USER_CATEGORY_HISTORY " + "(category_id bigint(20) unsigned NOT NULL AUTO_INCREMENT, "
 					+ " first_id VARCHAR(255) NOT NULL , " + " second_id VARCHAR(255) NOT NULL, "
 					+ " count bigint(20) NOT NULL, " + " PRIMARY KEY (category_id))";
 			stmt.executeUpdate(sql);
-
 			while ((line = reader.readLine()) != null) {
 				JSONObject review = new JSONObject(line);
 				String business_id = review.getString("business_id");
@@ -126,9 +116,6 @@ public class DBImport {
 		return str.replace("\"", "\\\"").replace("/", " or ").replace("'", " ");
 	}
 
-	/**
-	 * Convert a JSONArray to string with ,
-	 */
 	public static String jsonArrayToString(JSONArray array) {
 		StringBuilder sb = new StringBuilder();
 		try {
@@ -146,9 +133,6 @@ public class DBImport {
 		return sb.toString();
 	}
 
-	/**
-	 * Convert a String to JSONArray “1111”,”2222”,”3333”
-	 */
 	public static JSONArray stringToJSONArray(String str) {
 		try {
 			return new JSONArray("[" + str + "]");

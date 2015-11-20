@@ -20,7 +20,7 @@ import db.DBConnection;
  * Servlet implementation class GetRestaurantsNearby
  */
 @WebServlet(description = "Get Restaurants near a location with latitude and longitude", urlPatterns = {
-"/GetRestaurantsNearby" })
+		"/GetRestaurantsNearby" })
 public class GetRestaurantsNearby extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final DBConnection connection = new DBConnection();
@@ -39,9 +39,7 @@ public class GetRestaurantsNearby extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// System.out.println("thread ID: " + Thread.currentThread().getId());
 		response.setContentType("application/json");
-		// response.setCharacterEncoding ("UTF-8");
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		String username = "";
 		String location = "";
@@ -61,7 +59,6 @@ public class GetRestaurantsNearby extends HttpServlet {
 			obj.append("location", location);
 			obj.append("country", country);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		PrintWriter out = response.getWriter();
@@ -75,49 +72,9 @@ public class GetRestaurantsNearby extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	// protected void doPost(HttpServletRequest request, HttpServletResponse
-	// response)
-	// throws ServletException, IOException {
-	// StringBuffer jb = new StringBuffer();
-	// String line = null;
-	// BufferedReader reader = null;
-	// try {
-	// reader = request.getReader();
-	// while ((line = reader.readLine()) != null) {
-	// jb.append(line);
-	// }
-	// } catch (IOException e) { /* report an error */
-	// } finally {
-	// if (reader != null) {
-	// reader.close();
-	// }
-	// }
-	//
-	// try {
-	// JSONObject input = new JSONObject(jb.toString());
-	// JSONObject output = new JSONObject();
-	// if (input.has("lat") && input.has("lon")) {
-	// double lat = (Double) input.get("lat");
-	// double lon = (Double) input.get("lon");
-	// output.append("lat", lat);
-	// output.append("lon", lon);
-	// output.append("name", "Panda Express");
-	// }
-	// response.setContentType("application/json");
-	// response.addHeader("Access-Control-Allow-Origin", "*");
-	// PrintWriter out = response.getWriter();
-	// out.print(output);
-	// out.flush();
-	// out.close();
-	// } catch (JSONException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// System.out.println("thread ID: " + Thread.currentThread().getId());
 		StringBuffer jb = new StringBuffer();
 		String line = null;
 		try {
@@ -126,7 +83,8 @@ public class GetRestaurantsNearby extends HttpServlet {
 				jb.append(line);
 			}
 			reader.close();
-		} catch (Exception e) { /* report an error */
+		} catch (Exception e) {
+			/* report an error */
 		}
 
 		try {
@@ -135,7 +93,6 @@ public class GetRestaurantsNearby extends HttpServlet {
 			if (input.has("lat") && input.has("lon")) {
 				double lat = (Double) input.get("lat");
 				double lon = (Double) input.get("lon");
-				// array = connection.GetRestaurantsNearLoation(lat, lon);
 				array = connection.GetRestaurantsNearLoationViaYelpAPI(lat, lon);
 			}
 			response.setContentType("application/json");

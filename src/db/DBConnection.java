@@ -20,9 +20,6 @@ public class DBConnection {
 	private Connection conn = null;
 	private static final int MAX_RECOMMENDED_RESTAURANTS = 10;
 	private static final int MIN_RECOMMENDED_RESTAURANTS = 3;
-	/**
-	 * Make sure it is the only place to configure db related parameters
-	 */
 	public static final String HOSTNAME = "localhost";
 	public static final String PORT = "3306";
 	public static final String DBNAME = "mysql";
@@ -52,7 +49,8 @@ public class DBConnection {
 			try {
 				conn.close();
 			} catch (Exception e) {
-				/* ignored */}
+				/* ignored */
+			}
 		}
 	}
 
@@ -69,7 +67,8 @@ public class DBConnection {
 				stmt.executeUpdate(sql);
 			}
 
-		} catch (Exception e) { /* report an error */
+		} catch (Exception e) {
+			/* report an error */
 			System.out.println(e.getMessage());
 		}
 	}
@@ -87,7 +86,8 @@ public class DBConnection {
 				stmt.executeUpdate(sql);
 			}
 
-		} catch (Exception e) { /* report an error */
+		} catch (Exception e) {
+			/* report an error */
 			System.out.println(e.getMessage());
 		}
 	}
@@ -104,12 +104,12 @@ public class DBConnection {
 				Set<String> set = new HashSet<>();
 				String[] categories = rs.getString("categories").split(",");
 				for (String category : categories) {
-					// ' Japanese ' -> 'Japanese'
 					set.add(category.trim());
 				}
 				return set;
 			}
-		} catch (Exception e) { /* report an error */
+		} catch (Exception e) {
+			/* report an error */
 			System.out.println(e.getMessage());
 		}
 		return new HashSet<String>();
@@ -122,8 +122,6 @@ public class DBConnection {
 				return null;
 			}
 			Statement stmt = conn.createStatement();
-			// if category = Chinese, categories = Chinese, Korean, Japanese,
-			// it's a match
 			String sql = "SELECT business_id from RESTAURANTS WHERE categories LIKE '%" + category + "%'";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -131,7 +129,8 @@ public class DBConnection {
 				set.add(business_id);
 			}
 			return set;
-		} catch (Exception e) { /* report an error */
+		} catch (Exception e) {
+			/* report an error */
 			System.out.println(e.getMessage());
 		}
 		return set;
@@ -173,7 +172,8 @@ public class DBConnection {
 				obj.put("image_url", rs.getString("image_url"));
 				return obj;
 			}
-		} catch (Exception e) { /* report an error */
+		} catch (Exception e) {
+			/* report an error */
 			System.out.println(e.getMessage());
 		}
 		return null;
@@ -217,7 +217,7 @@ public class DBConnection {
 			}
 
 			Set<String> visitedRestaurants = getVisitedRestaurants(userId);
-			Set<String> allCategories = new HashSet<>();// why hashSet?
+			Set<String> allCategories = new HashSet<>();
 			for (String restaurant : visitedRestaurants) {
 				allCategories.addAll(getCategories(restaurant));
 			}
@@ -229,7 +229,6 @@ public class DBConnection {
 			Set<JSONObject> diff = new HashSet<>();
 			int count = 0;
 			for (String business_id : allRestaurants) {
-				// Perform filtering
 				if (!visitedRestaurants.contains(business_id)) {
 					diff.add(getRestaurantsById(business_id));
 					count++;
@@ -238,7 +237,6 @@ public class DBConnection {
 					}
 				}
 			}
-
 			if (count < MIN_RECOMMENDED_RESTAURANTS) {
 				allCategories.addAll(getMoreCategories(allCategories));
 				for (String category : allCategories) {
@@ -255,9 +253,9 @@ public class DBConnection {
 					}
 				}
 			}
-
 			return new JSONArray(diff);
-		} catch (Exception e) { /* report an error */
+		} catch (Exception e) {
+			/* report an error */
 			System.out.println(e.getMessage());
 		}
 		return null;
@@ -286,7 +284,8 @@ public class DBConnection {
 				list.add(obj);
 			}
 			return new JSONArray(list);
-		} catch (Exception e) { /* report an error */
+		} catch (Exception e) {
+			/* report an error */
 			System.out.println(e.getMessage());
 		}
 		return null;
@@ -303,7 +302,6 @@ public class DBConnection {
 			Statement stmt = conn.createStatement();
 			String sql = "";
 			List<JSONObject> list = new ArrayList<JSONObject>();
-
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject object = array.getJSONObject(i);
 				Restaurant restaurant = new Restaurant(object);
@@ -343,7 +341,6 @@ public class DBConnection {
 	}
 
 	public static void main(String[] args) {
-		// This is for test purpose
 		DBConnection conn = new DBConnection("jdbc:mysql://localhost:3306/mysql?user=root&password=password");
 		JSONArray array = conn.GetRestaurantsNearLoationViaYelpAPI(1.0, 2.0);
 	}
